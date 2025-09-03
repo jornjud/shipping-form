@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบฟอร์มส่งพัสดุ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .controls {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .controls h2 {
+            margin-top: 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .button-group button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button-group button:hover {
+            background-color: #0056b3;
+        }
+        .size-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            align-items: center;
+        }
+        .size-options label {
+            cursor: pointer;
+            padding: 5px;
+        }
+        .size-options input[type="radio"] {
+            margin-right: 5px;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            border: 2px solid #000;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            transition: max-width 0.3s ease-in-out;
+        }
+        .header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            border: 1px solid #000;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .info-box p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+        .section-divider {
+            border-top: 2px solid #000;
+            margin: 20px 0;
+        }
+        .note {
+            text-align: center;
+            font-style: italic;
+            color: #555;
+            margin-top: 20px;
+        }
+        
+        /* สไตล์สำหรับขนาดต่างๆ ที่จะแสดงผลทันทีบนหน้าเว็บ */
+        .container.size-standard {
+            max-width: 500px;
+            padding: 15px;
+        }
+        .container.size-small {
+            max-width: 300px;
+            padding: 10px;
+        }
+        .container.size-envelope {
+            max-width: 400px;
+            padding: 12px;
+        }
+
+        /* Responsive Styles and Size Adjustments for Print */
+        @media print {
+            body {
+                background-color: #fff;
+                margin: 0;
+                padding: 0;
+            }
+            .controls {
+                display: none;
+            }
+            .container {
+                border: 1px solid #000;
+                box-shadow: none;
+                margin: 0;
+                padding: 10px;
+            }
+
+            /* Standard Size (A5-like) */
+            .size-standard .container {
+                width: 100%;
+                max-width: 500px;
+            }
+            .size-standard .info-box p {
+                font-size: 14px;
+            }
+
+            /* Small Size (Passport-like) */
+            .size-small .container {
+                width: 100%;
+                max-width: 300px;
+            }
+            .size-small .info-box p {
+                font-size: 12px;
+            }
+            .size-small .header {
+                font-size: 20px;
+            }
+
+            /* Envelope Size (สำหรับซองจดหมาย) */
+            .size-envelope .container {
+                width: 100%;
+                max-width: 400px;
+                padding: 5px;
+            }
+            .size-envelope .header {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            .size-envelope .info-box {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            .size-envelope .info-box h3 {
+                font-size: 16px;
+            }
+            .size-envelope .info-box p {
+                font-size: 11px;
+            }
+            .size-envelope .note {
+                font-size: 12px;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <h2>จัดการข้อมูล & ขนาดฟอร์ม</h2>
+        <div class="input-group">
+            <label for="senderName">ชื่อผู้ส่ง:</label>
+            <input type="text" id="senderName" value="ขจร ตรียุทธ">
+        </div>
+        <div class="input-group">
+            <label for="senderAddress">ที่อยู่ผู้ส่ง:</label>
+            <textarea id="senderAddress">13/5 ซ.พหลโยธิน 24 แขวงจอมพล เขตจตุจักร กรุงเทพมหานคร 10900</textarea>
+        </div>
+        <div class="input-group">
+            <label for="senderPhone">โทรศัพท์ผู้ส่ง:</label>
+            <input type="text" id="senderPhone" value="081-234-5678">
+        </div>
+        <div class="input-group">
+            <label for="receiverName">ชื่อผู้รับ:</label>
+            <input type="text" id="receiverName" value="Arifootballstore.com (2000161801)">
+        </div>
+        <div class="input-group">
+            <label for="receiverAddress">ที่อยู่ผู้รับ:</label>
+            <textarea id="receiverAddress">Unit A01 เลขที่ 135 ถนนอาจณรงค์ แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110</textarea>
+        </div>
+        <div class="input-group">
+            <label for="receiverPhone">โทรศัพท์ผู้รับ:</label>
+            <input type="text" id="receiverPhone" value="096-845-8690, 061-885-5557">
+        </div>
+        <div class="button-group">
+            <button onclick="swapFields()">สลับผู้รับ/ผู้ส่ง 🔃</button>
+            <button onclick="showMenu()">จัดการข้อมูล 💾</button>
+        </div>
+        <div class="size-options">
+            <strong>เลือกขนาดฟอร์ม:</strong>
+            <input type="radio" id="sizeStandard" name="formSize" value="size-standard" checked>
+            <label for="sizeStandard">มาตรฐาน</label>
+            <input type="radio" id="sizeSmall" name="formSize" value="size-small">
+            <label for="sizeSmall">เล็ก</label>
+            <input type="radio" id="sizeEnvelope" name="formSize" value="size-envelope">
+            <label for="sizeEnvelope">ซองจดหมาย</label>
+        </div>
+    </div>
+
+    <div class="container size-standard" id="shippingForm">
+        <div class="header">แบบฟอร์มส่งพัสดุ</div>
+
+        <div class="info-box">
+            <h3>ผู้ส่ง</h3>
+            <p><strong>ชื่อ:</strong> <span id="displaySenderName"></span></p>
+            <p><strong>ที่อยู่:</strong> <span id="displaySenderAddress"></span></p>
+            <p><strong>โทรศัพท์:</strong> <span id="displaySenderPhone"></span></p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="info-box">
+            <h3>ผู้รับ</h3>
+            <p><strong>ชื่อ:</strong> <span id="displayReceiverName"></span></p>
+            <p><strong>ที่อยู่:</strong> <span id="displayReceiverAddress"></span></p>
+            <p><strong>โทรศัพท์:</strong> <span id="displayReceiverPhone"></span></p>
+        </div>
+
+        <div class="note">ตัดส่วนนี้ไปติดบนกล่องพัสดุ</div>
+    </div>
+
+    <script>
+        const senderNameInput = document.getElementById('senderName');
+        const senderAddressInput = document.getElementById('senderAddress');
+        const senderPhoneInput = document.getElementById('senderPhone');
+        const receiverNameInput = document.getElementById('receiverName');
+        const receiverAddressInput = document.getElementById('receiverAddress');
+        const receiverPhoneInput = document.getElementById('receiverPhone');
+
+        const displaySenderName = document.getElementById('displaySenderName');
+        const displaySenderAddress = document.getElementById('displaySenderAddress');
+        const displaySenderPhone = document.getElementById('displaySenderPhone');
+        const displayReceiverName = document.getElementById('displayReceiverName');
+        const displayReceiverAddress = document.getElementById('displayReceiverAddress');
+        const displayReceiverPhone = document.getElementById('displayReceiverPhone');
+
+        const formContainer = document.getElementById('shippingForm');
+        const sizeRadios = document.querySelectorAll('input[name="formSize"]');
+
+        function updateFields() {
+            displaySenderName.textContent = senderNameInput.value;
+            displaySenderPhone.textContent = senderPhoneInput.value;
+            displayReceiverName.textContent = receiverNameInput.value;
+            displayReceiverPhone.textContent = receiverPhoneInput.value;
+            
+            displaySenderAddress.innerHTML = senderAddressInput.value.replace(/\n/g, '<br>');
+            displayReceiverAddress.innerHTML = receiverAddressInput.value.replace(/\n/g, '<br>');
+        }
+
+        function swapFields() {
+            const tempName = senderNameInput.value;
+            const tempAddress = senderAddressInput.value;
+            const tempPhone = senderPhoneInput.value;
+
+            senderNameInput.value = receiverNameInput.value;
+            senderAddressInput.value = receiverAddressInput.value;
+            senderPhoneInput.value = receiverPhoneInput.value;
+
+            receiverNameInput.value = tempName;
+            receiverAddressInput.value = tempAddress;
+            receiverPhoneInput.value = tempPhone;
+
+            updateFields();
+        }
+
+        // Main function to show the save/load menu
+        function showMenu() {
+            const action = prompt("เลือกการกระทำ:\n1. บันทึกข้อมูลผู้ส่ง\n2. บันทึกข้อมูลผู้รับ\n3. โหลดข้อมูลลงในช่องผู้ส่ง\n4. โหลดข้อมูลลงในช่องผู้รับ\n(พิมพ์หมายเลข 1, 2, 3 หรือ 4)");
+            if (action === null) return; // User cancelled
+
+            switch(action) {
+                case "1":
+                    saveData('sender');
+                    break;
+                case "2":
+                    saveData('receiver');
+                    break;
+                case "3":
+                    loadData('sender');
+                    break;
+                case "4":
+                    loadData('receiver');
+                    break;
+                default:
+                    alert("ตัวเลือกไม่ถูกต้อง!");
+            }
+        }
+
+        async function saveData(type) {
+            const data = {
+                name: (type === 'sender' ? senderNameInput.value : receiverNameInput.value),
+                address: (type === 'sender' ? senderAddressInput.value : receiverAddressInput.value),
+                phone: (type === 'sender' ? senderPhoneInput.value : receiverPhoneInput.value)
+            };
+            const jsonString = JSON.stringify(data, null, 2);
+            
+            try {
+                if (window.showSaveFilePicker) {
+                    const fileHandle = await window.showSaveFilePicker({
+                        suggestedName: `${type === 'sender' ? 'ที่อยู่ผู้ส่ง' : 'ที่อยู่ผู้รับ'}.json`,
+                        types: [{
+                            description: 'JSON Files',
+                            accept: {
+                                'application/json': ['.json'],
+                            },
+                        }],
+                    });
+                    const writableStream = await fileHandle.createWritable();
+                    await writableStream.write(jsonString);
+                    await writableStream.close();
+                    alert("บันทึกข้อมูลเรียบร้อยแล้วจ้า!");
+                } else {
+                    // Fallback for browsers without File System Access API
+                    const blob = new Blob([jsonString], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${type === 'sender' ? 'ที่อยู่ผู้ส่ง' : 'ที่อยู่ผู้รับ'}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    alert("กำลังดาวน์โหลดไฟล์... (กรุณาตั้งชื่อไฟล์และบันทึก)");
+                }
+            } catch (error) {
+                console.error("Save failed:", error);
+                alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล!");
+            }
+        }
+
+        async function loadData(type) {
+            try {
+                if (window.showOpenFilePicker) {
+                    const [fileHandle] = await window.showOpenFilePicker({
+                        types: [{
+                            description: 'JSON Files',
+                            accept: {
+                                'application/json': ['.json'],
+                            },
+                        }],
+                        multiple: false
+                    });
+                    const file = await fileHandle.getFile();
+                    const content = await file.text();
+                    const data = JSON.parse(content);
+                    
+                    if (type === 'sender') {
+                        senderNameInput.value = data.name;
+                        senderAddressInput.value = data.address;
+                        senderPhoneInput.value = data.phone;
+                    } else {
+                        receiverNameInput.value = data.name;
+                        receiverAddressInput.value = data.address;
+                        receiverPhoneInput.value = data.phone;
+                    }
+                    updateFields();
+                    alert("โหลดข้อมูลเรียบร้อยแล้วจ้า!");
+                } else {
+                    // Fallback for browsers without File System Access API
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.json';
+                    input.style.display = 'none';
+                    document.body.appendChild(input);
+
+                    input.addEventListener('change', async (event) => {
+                        const file = event.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                try {
+                                    const data = JSON.parse(e.target.result);
+                                    if (type === 'sender') {
+                                        senderNameInput.value = data.name;
+                                        senderAddressInput.value = data.address;
+                                        senderPhoneInput.value = data.phone;
+                                    } else {
+                                        receiverNameInput.value = data.name;
+                                        receiverAddressInput.value = data.address;
+                                        receiverPhoneInput.value = data.phone;
+                                    }
+                                    updateFields();
+                                    alert("โหลดข้อมูลเรียบร้อยแล้วจ้า!");
+                                } catch (error) {
+                                    alert("ไฟล์ที่เลือกไม่ถูกต้อง!");
+                                }
+                            };
+                            reader.readAsText(file);
+                        }
+                        document.body.removeChild(input);
+                    });
+
+                    input.click();
+                }
+            } catch (error) {
+                console.error("Load failed:", error);
+                alert("เกิดข้อผิดพลาดในการโหลดข้อมูล!");
+            }
+        }
+
+        // Add event listeners for real-time updates
+        senderNameInput.addEventListener('input', updateFields);
+        senderAddressInput.addEventListener('input', updateFields);
+        senderPhoneInput.addEventListener('input', updateFields);
+        receiverNameInput.addEventListener('input', updateFields);
+        receiverAddressInput.addEventListener('input', updateFields);
+        receiverPhoneInput.addEventListener('input', updateFields);
+
+        // Add event listeners for size change
+        sizeRadios.forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                formContainer.className = 'container ' + event.target.value;
+            });
+        });
+
+        // Initial setup on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateFields();
+            const checkedRadio = document.querySelector('input[name="formSize"]:checked');
+            if (checkedRadio) {
+                formContainer.className = 'container ' + checkedRadio.value;
+            }
+        });
+    </script>
+
+</body>
+</html>
